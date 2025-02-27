@@ -46,7 +46,13 @@ const AuthModal = ({
 
     // Simulate API call
     setTimeout(() => {
-      onLogin(loginEmail, loginPassword);
+      // Always succeed for demo purposes
+      if (loginEmail && loginPassword) {
+        onLogin(loginEmail, loginPassword);
+        alert("Login successful! Welcome back.");
+      } else {
+        setError("Please enter both email and password");
+      }
       setIsLoading(false);
     }, 1000);
   };
@@ -60,11 +66,17 @@ const AuthModal = ({
       return;
     }
 
+    if (!registerName || !registerEmail || !registerPassword) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     setIsLoading(true);
 
     // Simulate API call
     setTimeout(() => {
       onRegister(registerName, registerEmail, registerPassword);
+      alert("Registration successful! Your account has been created.");
       setIsLoading(false);
     }, 1000);
   };

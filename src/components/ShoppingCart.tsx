@@ -31,6 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import PaymentMethods from "./PaymentMethods";
 
 interface CartItem {
   id: string;
@@ -80,6 +81,8 @@ const ShoppingCart = ({
 }: ShoppingCartProps) => {
   const [couponCode, setCouponCode] = useState("");
   const [checkoutDialogOpen, setCheckoutDialogOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<string>("credit-card");
+  const [paymentData, setPaymentData] = useState<any>(null);
 
   // Calculate totals
   const subtotal = items.reduce((total, item) => {
@@ -125,7 +128,23 @@ const ShoppingCart = ({
     }
   };
 
+  const handleSelectPaymentMethod = (method: string, data?: any) => {
+    setPaymentMethod(method);
+    if (data) {
+      setPaymentData(data);
+    }
+  };
+
   const handleCheckout = () => {
+    // In a real implementation, you would process the payment here
+    // using the selected payment method and data
+    console.log("Processing payment with:", paymentMethod, paymentData);
+
+    // Show success message
+    alert(
+      `Payment processed successfully with ${paymentMethod}! Your order is confirmed.`,
+    );
+
     setCheckoutDialogOpen(false);
     onCheckout(items);
   };
@@ -301,7 +320,7 @@ const ShoppingCart = ({
                             {displayPrice === 0 ? (
                               <span className="text-green-600">FREE</span>
                             ) : (
-                              `${displayPrice.toFixed(2)}`
+                              `$${displayPrice.toFixed(2)}`
                             )}
                           </div>
                         </div>
@@ -328,7 +347,7 @@ const ShoppingCart = ({
                       {shipping === 0 ? (
                         <span className="text-green-600">FREE</span>
                       ) : (
-                        `${shipping.toFixed(2)}`
+                        `$${shipping.toFixed(2)}`
                       )}
                     </span>
                   </div>
@@ -396,16 +415,12 @@ const ShoppingCart = ({
                       </div>
                     </div>
 
-                    {/* Payment form would go here in a real implementation */}
+                    {/* Payment Methods */}
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Payment Method</h4>
-                      <div className="border rounded-md p-3">
-                        <div className="flex items-center">
-                          <CreditCard className="h-5 w-5 mr-2 text-gray-500" />
-                          <span className="text-sm">Credit Card</span>
-                        </div>
-                        {/* Payment form fields would go here */}
-                      </div>
+                      <PaymentMethods
+                        onSelectPaymentMethod={handleSelectPaymentMethod}
+                        total={total}
+                      />
                     </div>
                   </div>
 

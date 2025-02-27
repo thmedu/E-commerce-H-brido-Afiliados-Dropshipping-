@@ -71,6 +71,9 @@ const Home = () => {
 
     // Open cart when adding item
     setIsCartOpen(true);
+
+    // Show confirmation message
+    alert("Item added to cart successfully!");
   };
 
   // Handle removing item from cart
